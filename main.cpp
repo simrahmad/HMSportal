@@ -12,7 +12,7 @@ int main()
     sqlite3 *db;
     if (sqlite3_open("hms.db", &db))
     {
-        std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "Can't open this database: " << sqlite3_errmsg(db) << std::endl;
         return 1;
     }
 

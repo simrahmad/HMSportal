@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 40px;
+  background: #fafafa;
+  color: #333;
+}
+
+h1 { color: #0066cc; }
+
+.form {
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 8px;
+  margin-right: 5px;
+}
+
+button {
+  padding: 8px 12px;
+  background: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: white;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+th {
+  background: #007bff;
+  color: white;
+}

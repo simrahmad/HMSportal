@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Management (Crow + SQLite)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        hr {
+            margin: 15px 0;
+        }
+        .msg {
+            color: green;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Management (Crow + SQLite)</h2>
+    <div>
+        Name: <input type="text" id="name" placeholder="Enter name">
+        Email: <input type="email" id="email" placeholder="Enter email">
+        <button onclick="addUser()">Add User</button>
+    </div>
+    <div id="message"></div>
+    <hr>
+    <a href="/users">Show All Users (JSON)</a>
+
+    <script>
+        async function addUser() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const message = document.getElementById("message");
+
+            message.textContent = "";
+            message.className = "";
+
+            if (!name || !email) {
+                message.textContent = "Please enter both Name and Email.";
+                message.className = "error";
+                return;
+            }
+
+            try {
+                const res = await fetch("/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email })
+                });
+
+                const data = await res.json();
+                if (data.status === "success") {
+                    message.textContent = "User added successfully!";
+                    message.className = "msg";
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                } else {
+                    message.textContent = data.message || "Error adding user.";
+                    message.className = "error";
+                }
+            } catch (err) {
+                message.textContent = "Error connecting to server.";
+                message.className = "error";
+            }
+        }
+    </script>
+</body>
+</html>
+

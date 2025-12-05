@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  crow_app:
+    build: .
+    container_name: crow_sqlite_crud
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./hms.db:/app/hms.db 
+    restart: unless-stopped
+

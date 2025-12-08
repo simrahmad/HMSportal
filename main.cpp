@@ -61,108 +61,214 @@ int main()
 
 CROW_ROUTE(app, "/")([]() {
     std::ostringstream page;
-    page << R"(
+    page << R"HTML(
     <html>
     <head>
         <title>Welcome — Hospital Management System</title>
         <style>
-            body { font-family: Arial, sans-serif; background: #f7fbff; display:flex; align-items:center; justify-content:center; height:100vh; }
-            .box { width:420px; background:white; padding:24px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center; }
-            a { display:inline-block; margin:10px; padding:10px 16px; border-radius:6px; text-decoration:none; border:1px solid #007bff; color:#007bff; }
-            a.primary { background:#007bff; color:white; border:none; }
-        </style>
-    </head>
-    <body>
-        <div class='box'>
-            <h1>Welcome to HMS</h1>
-            <p>Manage patient appointments and records quickly.</p>
-            <div>
-                <a href="/login" class="primary">Login</a>
-                <a href="/about">About</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    )";
-    return crow::response(page.str());
-});
-
-CROW_ROUTE(app, "/login")([]() {
-    std::ostringstream page;
-    page << R"(
-    <html>
-    <head>
-        <title>Login Page</title>
-        <style>
             body {
-                font-family: Arial;
-                background: #e9f0ff;
+                margin: 0;
+                font-family: 'Segoe UI', sans-serif;
+                background: linear-gradient(135deg, #6dd5fa, #ffffff);
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
             }
             .box {
-                width: 350px;
+                width: 400px;
                 background: white;
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                padding: 30px;
+                border-radius: 16px;
+                box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+                text-align: center;
+                animation: fadeIn 1s ease-in-out;
             }
-            input, button {
-                width: 100%;
-                padding: 10px;
-                margin: 8px 0;
-                border-radius: 5px;
-                border: 1px solid #aaa;
+            h1 {
+                color: #007bff;
+                margin-bottom: 15px;
             }
-            button {
+            p {
+                color: #555;
+                margin-bottom: 25px;
+                font-size: 16px;
+            }
+            a.button {
+                display: inline-block;
+                padding: 12px 20px;
+                margin: 10px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: bold;
+                transition: 0.3s;
+                border: 2px solid #007bff;
+                color: #007bff;
+            }
+            a.button.primary {
                 background: #007bff;
                 color: white;
                 border: none;
-                cursor: pointer;
+            }
+            a.button:hover {
+                opacity: 0.85;
+            }
+            @keyframes fadeIn {
+                0% { opacity: 0; transform: translateY(-20px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
         </style>
     </head>
     <body>
-        <div class='box'>
-            <h2 style='text-align:center;'>Login</h2>
-            <input id='username' placeholder='Enter username'>
-            <input id='password' type='password' placeholder='Enter password'>
-            <button onclick='login()'>Login</button>
+        <div class="box">
+            <h1>Welcome to HMS</h1>
+            <p>Manage patient appointments and records quickly.</p>
+            <div>
+                <a href="/login" class="button primary">Login</a>
+                <a href="/about" class="button">About</a>
+            </div>
         </div>
-
-        <script>
-            async function login() {
-                let username = document.getElementById("username").value;
-                let password = document.getElementById("password").value;
-
-                let res = await fetch("/auth", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password })
-                });
-
-                if (res.status === 200) {
-                    window.location.href = "/dashboard";
-                } else {
-                    alert("Incorrect Username or Password!");
-                }
-            }
-        </script>
     </body>
     </html>
-    )";
+    )HTML";
     return crow::response(page.str());
 });
-CROW_ROUTE(app, "/logout")([&](){
+
+
+CROW_ROUTE(app, "/login")([]() {
+    std::ostringstream page;
+    page << R"HTML(
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HMS Login</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #6dd5fa, #ffffff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            width: 380px;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-box img {
+            width: 90px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 14px;
+            border-radius: 8px;
+            border: none;
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .back-link {
+            margin-top: 18px;
+            display: block;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/4320/4320350.png">
+        <h2>HMS Login</h2>
+        <p>Please enter your credentials to continue</p>
+
+        <input id="username" type="text" placeholder="Enter Username">
+        <input id="password" type="password" placeholder="Enter Password">
+
+        <button onclick="login()">Login</button>
+
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+
+    <script>
+        async function login() {
+            let username = document.getElementById("username").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            if (!username || !password) {
+                alert("Both fields are required!");
+                return;
+            }
+
+            let res = await fetch("/auth", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (res.status === 200) {
+                window.location.href = "/dashboard";
+            } else {
+                alert("Invalid Username or Password!");
+            }
+        }
+    </script>
+</body>
+</html>
+)HTML";
+
+    return crow::response(page.str());
+});
+CROW_ROUTE(app, "/logout")([&]() -> crow::response {
     isLoggedIn = false;
     return crow::response(302, "<script>window.location='/login';</script>");
 });
 
+
 CROW_ROUTE(app, "/about")([]() {
     std::ostringstream page;
-    page << R"(
+    page << R"HTML(
     <html>
     <head>
         <title>About Us - HMS</title>
@@ -271,15 +377,15 @@ CROW_ROUTE(app, "/about")([]() {
                 <h2>Why Choose Us?</h2>
                 <div class="cards">
                     <div class="card">
-                        <h3>✅ Secure Data</h3>
+                        <h3> Secure Data</h3>
                         <p>All patient data is safely stored with proper authentication.</p>
                     </div>
                     <div class="card">
-                        <h3>⚡ Fast Access</h3>
+                        <h3> Fast Access</h3>
                         <p>Quick access to appointments and records in real time.</p>
                     </div>
                     <div class="card">
-                        <h3>💻 User Friendly</h3>
+                        <h3> User Friendly</h3>
                         <p>Simple interface that anyone can use without training.</p>
                     </div>
                 </div>
@@ -303,7 +409,7 @@ CROW_ROUTE(app, "/about")([]() {
         </div>
     </body>
     </html>
-    )";
+    )HTML";
     return crow::response(page.str());
 });
 
@@ -334,18 +440,18 @@ CROW_ROUTE(app, "/auth").methods("POST"_method)([&](const crow::request& req){
     return crow::response(401, "Invalid credentials");
 });
 //Home page
-CROW_ROUTE(app, "/dashboard")([&]() {
+CROW_ROUTE(app, "/dashboard")([&]() -> crow::response {
     if (!isLoggedIn)
         return crow::response(302, "<script>window.location='/login';</script>");
         std::ostringstream page;
-        page << R"(
+        page << R"HTML(
             <html>
             <head>
                               <title>Home Page</title>
              <style>
                     body {
                         font-family: Arial, sans-serif;
-                        background:url('hms.png');
+                        background:linear-gradient(135deg, #6dd5fa, #ffffff);
                         background-size: cover;
                         margin: 0;
                         padding: 0;
@@ -435,12 +541,12 @@ CROW_ROUTE(app, "/dashboard")([&]() {
                         const phone = document.getElementById("phone").value.trim();
                         const disease = document.getElementById("disease").value.trim();
                         const date = document.getElementById("date").value.trim();
-			const nameRegex = /^[A-Za-z\s]{3,}$/;
+                        const nameRegex = /^[A-Za-z\s]{3,}$/;
                         if (!nameRegex.test(name)) {
                             alert("Name must contain only letters and be at least 3 characters long!");
                             return;
                           }
-			const phoneRegex = /^[0-9]{11}$/;
+                        const phoneRegex = /^[0-9]{11}$/;
                         if (!phoneRegex.test(phone)) {
                         alert("Phone number must be exactly 11 digits!");
                        return;
@@ -454,7 +560,7 @@ CROW_ROUTE(app, "/dashboard")([&]() {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ name, phone, disease, date })
                         });
-			 if (!res.ok) {
+                         if (!res.ok) {
                             const msg = await res.text();
                             alert(msg);
                             return;
@@ -465,7 +571,7 @@ CROW_ROUTE(app, "/dashboard")([&]() {
                         document.getElementById("date").value = "";
                         loadUsers();
                     }
-	async function editUser(id) {
+        async function editUser(id) {
                      const name = prompt("Enter new name:");
                      const phone = prompt("Enter new phone number:");
                      const disease = prompt("Enter new disease:");
@@ -560,7 +666,7 @@ CROW_ROUTE(app, "/dashboard")([&]() {
                 </div>
             </body>
             </html>
-        )";
+        )HTML";
         return crow::response(page.str());
     });
  // Add User
@@ -578,7 +684,7 @@ CROW_ROUTE(app, "/dashboard")([&]() {
       if (!std::regex_match(name, nameRegex))
           return crow::response(400, "Invalid name format!");
 
-    
+
       std::regex phoneRegex("^[0-9]{11}$");
       if (!std::regex_match(phone, phoneRegex))
           return crow::response(400, "Invalid phone number!");
@@ -606,7 +712,7 @@ CROW_ROUTE(app, "/dashboard")([&]() {
  // Edit User
 CROW_ROUTE(app, "/edit").methods("POST"_method)([db](const crow::request &req) {
     auto body = crow::json::load(req.body);
-    if (!body || !body.has("id") || !body.has("name") || !body.has("phone") || 
+    if (!body || !body.has("id") || !body.has("name") || !body.has("phone") ||
         !body.has("disease") || !body.has("date"))
         return crow::response(400, "Invalid input");
 
@@ -704,4 +810,3 @@ CROW_ROUTE(app, "/edit").methods("POST"_method)([db](const crow::request &req) {
 
     sqlite3_close(db);
 }
- 

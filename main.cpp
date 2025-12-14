@@ -120,7 +120,7 @@ CROW_ROUTE(app, "/")([]() {
     </head>
     <body>
         <div class="box">
-            <h1>Welcome to HMS</h1>
+            <h1>Welcome to Hospital Management System</h1>
             <p>Manage patient appointments and records quickly.</p>
             <div>
                 <a href="/login" class="button primary">Login</a>
